@@ -1,6 +1,9 @@
 package ru.avalon.java.tcp;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
@@ -22,6 +25,7 @@ public final class TcpSender {
         // 4. Отправляем сообщение
         send(socket, message);
         // 5. Закрываем соединеие
+        System.out.println(socket.isConnected());
         socket.close();
     }
 
@@ -34,7 +38,8 @@ public final class TcpSender {
         /*
          * TODO Реализовать метод prepareMessage класса TcpSender
          */
-        throw new UnsupportedOperationException("Not implemented yet!");
+        String msg = "Hello over TCP";
+        return msg;
     }
 
     /**
@@ -46,7 +51,8 @@ public final class TcpSender {
         /*
          * TODO Реализовать метод prepareAddress класса TcpSender
          */
-        throw new UnsupportedOperationException("Not implemented yet!");
+        SocketAddress addr = new InetSocketAddress("localhost", 10000);
+        return addr;
     }
 
     /**
@@ -59,11 +65,18 @@ public final class TcpSender {
      *
      * @throws IOException
      */
-    private static Socket connect(SocketAddress address) throws IOException {
+    private static Socket connect(SocketAddress address) {
         /*
          * TODO Реализовать метод connect класса TcpSender
          */
-        throw new UnsupportedOperationException("Not implemented yet!");
+            Socket socket = new Socket();
+            try {
+                socket.connect(address);
+            } catch (IOException e) {
+                System.err.println("Failed to connect");
+            }
+            return socket;
+                
     }
 
     /**
@@ -78,7 +91,11 @@ public final class TcpSender {
         /*
          * TODO Реализовать метод send класса TcpSender
          */
-        throw new UnsupportedOperationException("Not implemented yet!");
+        OutputStream stream = socket.getOutputStream();
+        OutputStreamWriter writer = new OutputStreamWriter(stream);
+        writer.write(message);
+        writer.flush();
+//        stream.close();
     }
 
 }
